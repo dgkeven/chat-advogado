@@ -1,42 +1,42 @@
-# Bot WhatsApp - Jonathan Berleze Advocacia
+# 🤖 Bot WhatsApp - Jonathan Berleze Advocacia
 
-Este é um **bot de atendimento via WhatsApp** desenvolvido com **Node.js** usando a biblioteca [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js).  
-O bot automatiza respostas de atendimento jurídico, agenda de consultas e transferência de atendentes.
+Este projeto é um **bot de atendimento jurídico via WhatsApp**, desenvolvido em **Node.js** com a biblioteca [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js).
+Ele automatiza atendimentos, organiza agendamentos e permite transferência entre atendentes de forma prática.
 
 ---
 
-## 🔹 Funcionalidades
+## ✨ Funcionalidades
 
-- Exibição de QR Code para autenticação do WhatsApp Web.
-- Atendimento automático fora do horário comercial com mensagem padrão.
-- Fluxo de atendimento com múltiplas etapas:
+- 📲 **QR Code** para autenticação via WhatsApp Web.
+- ⏰ **Atendimento automático** fora do horário comercial com mensagem padrão.
+- 🔄 **Fluxo de atendimento** com múltiplas etapas:
+
   - Consulta de andamento de processo.
   - Informações sobre valor de consulta.
   - Agendamento de atendimento.
   - Conversa com atendente humano.
-- Transferência de atendimento entre dois atendentes (`Jonathan` e `Ingrid`).
-- Modo manual de atendimento para desativar respostas automáticas.
+
+- 👥 **Transferência de atendimento** entre dois atendentes (`Jonathan` e `Ingrid`).
+- 📴 **Modo manual de atendimento**, desativando as respostas automáticas.
 
 ---
 
-## 🔹 Pré-requisitos
+## 📋 Pré-requisitos
 
-- [Node.js](https://nodejs.org/) v16 ou superior.
-- [npm](https://www.npmjs.com/).
-- WhatsApp instalado em um celular para autenticação via QR Code.
+- [Node.js](https://nodejs.org/) **v16+**
+- [npm](https://www.npmjs.com/)
+- WhatsApp instalado em um celular para autenticação via QR Code
 
 ---
 
-## 🔹 Instalação
+## ⚙️ Instalação
 
-```bash
 1. Clone o repositório:
 
+```bash
 git clone https://github.com/dgkeven/chat-advogado.git
 cd chat-advogado
 ```
-
-````
 
 2. Instale as dependências:
 
@@ -46,14 +46,18 @@ npm install
 
 ---
 
-## 🔹 Configuração
+## 🔧 Configuração
 
-- Nenhuma configuração extra é necessária, pois o bot utiliza **LocalAuth**, que salva a sessão do WhatsApp automaticamente.
-- Caso seja necessário limpar a sessão, basta deletar a pasta `./.wwebjs_auth`.
+- O bot utiliza **LocalAuth**, que salva a sessão do WhatsApp automaticamente.
+- Para limpar a sessão, basta excluir a pasta:
+
+```bash
+rm -rf ./.wwebjs_auth
+```
 
 ---
 
-## 🔹 Execução
+## 🚀 Execução
 
 1. Inicie o bot:
 
@@ -61,75 +65,70 @@ npm install
 node chatbot.js
 ```
 
-2. Abra o navegador e acesse para verificar status:
+2. Verifique o status no navegador:
 
-```
-http://localhost:5002/
-```
+👉 [http://localhost:5002/](http://localhost:5002/)
 
-3. Para acessar o QR Code e autenticar o WhatsApp:
+3. Acesse o QR Code para autenticar o WhatsApp:
 
-```
-http://localhost:5002/qrcode
-```
+👉 [http://localhost:5002/qrcode](http://localhost:5002/qrcode)
 
 ---
 
-## 🔹 Comandos do WhatsApp
+## 💬 Comandos no WhatsApp
 
 - `cancelar` → Encerra o atendimento atual.
-- `manual` → Ativa modo manual (desativa respostas automáticas).
-- `encerrar` → Desativa modo manual e reativa o bot.
-- `@ingrid` → Transfere atendimento para a secretária Ingrid.
-- `@jonathan` → Transfere atendimento de volta para Jonathan.
+- `manual` → Ativa o modo manual (desativa respostas automáticas).
+- `encerrar` → Desativa o modo manual e reativa o bot.
+- `@ingrid` → Transfere o atendimento para Ingrid.
+- `@jonathan` → Transfere o atendimento de volta para Jonathan.
 
 ---
 
-## 🔹 Horário de Atendimento
+## 🕒 Horário de Atendimento
 
-- Segunda a Sexta: **08:00 às 18:00**
-- Fora do horário comercial, o bot envia uma mensagem automática informando que o atendimento está indisponível.
+- **Segunda a Sexta:** 08:00 às 18:00
+- Fora do horário comercial, o bot responde com mensagem automática informando indisponibilidade.
 
 ---
 
-## 🔹 Estrutura do Código
+## 📂 Estrutura do Código
 
-- `chatbot.js` → Arquivo principal que contém toda a lógica do bot.
+- `chatbot.js` → Arquivo principal com toda a lógica do bot.
 - Variáveis globais:
 
-  - `conversas` → Controla a etapa e atendente de cada usuário.
-  - `atendimentoManual` → Controla se o usuário está em modo manual.
-  - `avisadosForaExpediente` → Controla se o usuário já foi avisado fora do expediente.
+  - `conversas` → Controla a etapa e o atendente de cada usuário.
+  - `atendimentoManual` → Define se o usuário está em modo manual.
+  - `avisadosForaExpediente` → Registra quem já foi avisado fora do expediente.
 
 ---
 
-## 🔹 Tecnologias
+## 🛠️ Tecnologias
 
-- Node.js
-- Express.js
-- whatsapp-web.js
-- qrcode
-
----
-
-## 🔹 Observações
-
-- Certifique-se de que o computador ou servidor tenha conexão estável com a internet.
-- O bot mantém a sessão ativa, portanto não é necessário escanear o QR Code a cada execução.
-- Em caso de erros de autenticação, limpe a pasta `./.wwebjs_auth` e escaneie o QR Code novamente.
+- [Node.js](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
+- [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js)
+- [qrcode](https://www.npmjs.com/package/qrcode)
 
 ---
 
-## 🔹 Autor
+## 📌 Observações
+
+- Requer **internet estável** no computador/servidor para manter a conexão com o WhatsApp.
+- A sessão permanece ativa, não sendo necessário escanear o QR Code toda vez.
+- Em caso de erro de autenticação, **apague a pasta `.wwebjs_auth`** e refaça a autenticação.
+
+---
+
+## 👨‍💻 Autor
 
 - **Jonathan Berleze Advocacia**
-- Desenvolvedor do bot: Keven Mendes
+- Desenvolvedor: **Keven Mendes**
 
 ---
 
-## 🔹 Licença
+## 📜 Licença
 
-Este projeto está licenciado sob a MIT License. Consulte o arquivo `LICENSE` para mais detalhes.
-````
+Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
