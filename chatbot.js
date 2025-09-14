@@ -201,4 +201,8 @@ Selecione uma das opções abaixo:
     }
 });
 
-client.initialize();
+client.on('disconnected', (reason) => {
+    console.log('❌ Cliente desconectado:', reason);
+    console.log('🔄 Tentando reconectar...');
+    client.initialize();
+});
