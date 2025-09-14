@@ -42,13 +42,13 @@ const client = new Client({
     puppeteer: {
         headless: true,
         args: ['--no-sandbox',
-             '--disable-setuid-sandbox',
-             '--disable-dev-shm-usage',
-             '--disable-extensions',
-             '--disable-gpu',
-             '--disable-software-rasterizer',
-             '--single-process'
-            ],
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-extensions',
+            '--disable-gpu',
+            '--disable-software-rasterizer',
+            '--single-process'
+        ],
     }
 });
 
@@ -201,8 +201,5 @@ Selecione uma das opções abaixo:
     }
 });
 
-client.on('disconnected', (reason) => {
-    console.log('❌ Cliente desconectado:', reason);
-    console.log('🔄 Tentando reconectar...');
-    client.initialize();
-});
+client.initialize();
+
