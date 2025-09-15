@@ -190,8 +190,6 @@ Deseja mais alguma informação? Digite *menu* para voltar ou *encerrar* para fi
                 client.sendMessage(chatId, `👩 *Ingrid (Secretária)*: Olá, eu sou Ingrid, secretária do Dr. Jonathan. Para que eu possa melhor auxiliar, me diga em que posso te ajudar?`);
                 conversas[chatId].etapa = 4;
                 conversas[chatId].atendente = 'ingrid'; // muda para Ingrid
-            } else {
-                client.sendMessage(chatId, '⚠️ Opção inválida. Escolha uma das opções 1, 2, 3 ou 4.');
             }
             break;
 
