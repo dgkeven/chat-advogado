@@ -1,6 +1,7 @@
 const express = require('express');
 const qrcode = require('qrcode');
 const { Client, LocalAuth } = require('whatsapp-web.js');
+const moment = require('moment-timezone');
 
 const app = express();
 const PORT = process.env.PORT || 5002;
@@ -66,14 +67,14 @@ client.on('ready', () => {
 });
 
 // Função para verificar se está em horário de expediente
-function dentroDoExpediente() {
-    const agora = new Date();
-    const hora = agora.getHours();
-    const diaSemana = agora.getDay(); // 0 = Domingo, 6 = Sábado
-
     // Segunda a Sexta, das 08:00 às 18:00
-    return diaSemana >= 1 && diaSemana <= 5 && hora >= 8 && hora < 18;
-}
+    function dentroDoExpediente() {
+        const agora = moment().tz('America/Sao_Paulo');
+        const hora = agora.hour();
+        const diaSemana = agora.day(); // 0 = Domingo, 6 = Sábado
+
+        return diaSemana >= 1 && diaSemana <= 5 && hora >= 8 && hora < 18;
+    }
 
 // Guarda quem já recebeu aviso fora do expediente
 const avisadosForaExpediente = {};
