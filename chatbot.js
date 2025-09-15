@@ -67,14 +67,14 @@ client.on('ready', () => {
 });
 
 // Função para verificar se está em horário de expediente
-    // Segunda a Sexta, das 08:00 às 18:00
-    function dentroDoExpediente() {
-        const agora = moment().tz('America/Sao_Paulo');
-        const hora = agora.hour();
-        const diaSemana = agora.day(); // 0 = Domingo, 6 = Sábado
+// Segunda a Sexta, das 08:00 às 18:00
+function dentroDoExpediente() {
+    const agora = moment().tz('America/Sao_Paulo');
+    const hora = agora.hour();
+    const diaSemana = agora.day(); // 0 = Domingo, 6 = Sábado
 
-        return diaSemana >= 1 && diaSemana <= 5 && hora >= 8 && hora < 18;
-    }
+    return diaSemana >= 1 && diaSemana <= 5 && hora >= 8 && hora < 18;
+}
 
 // Guarda quem já recebeu aviso fora do expediente
 const avisadosForaExpediente = {};
@@ -105,13 +105,6 @@ client.on('message', async msg => {
         }
     }
 
-    // Se for cancelado
-    if (texto === 'cancelar') {
-        delete conversas[chatId];
-        delete atendimentoManual[chatId];
-        return client.sendMessage(chatId, '❌ Atendimento cancelado. Estamos à disposição sempre que precisar.');
-    }
-
     // Ativa/desativa manual
     if (texto === 'manual') {
         atendimentoManual[chatId] = true;
@@ -122,7 +115,8 @@ client.on('message', async msg => {
             delete atendimentoManual[chatId];
             return client.sendMessage(chatId, '✅ Atendimento automático reativado. Conte comigo!');
         } else {
-            return client.sendMessage(chatId, '⚠️ Você não está em atendimento manual. Envie "manual" para desativar o robô.');
+            delete conversas[chatId];
+            return client.sendMessage(chatId, '❌ Atendimento encerrado. Estamos à disposição sempre que precisar.');
         }
     }
 
@@ -155,8 +149,22 @@ Selecione uma das opções abaixo:
 3️⃣ Agendar horário de atendimento  
 4️⃣ Conversar com atendente  
 
-❌ Envie "cancelar" a qualquer momento para encerrar o atendimento.`);
-        conversas[chatId] = { etapa: 1, atendente: 'jonathan' }; // padrão é Jonathan
+❌ Envie "encerrar" a qualquer momento para finalizar o atendimento.`);
+        conversas[chatId] = { etapa: 1, atendente: 'jonathan' };
+        return;
+    }
+
+    // Reabrir o menu caso cliente peça
+    if (texto === 'menu') {
+        client.sendMessage(chatId, `📋 Menu de opções:  
+
+1️⃣ Saber o andamento do meu processo  
+2️⃣ Qual valor da consulta?  
+3️⃣ Agendar horário de atendimento  
+4️⃣ Conversar com atendente  
+
+❌ Envie "encerrar" para finalizar o atendimento.`);
+        conversas[chatId].etapa = 1;
         return;
     }
 
@@ -170,8 +178,10 @@ Selecione uma das opções abaixo:
                 conversas[chatId].etapa = 2;
                 atendente = 'jonathan';
             } else if (texto === '2') {
-                client.sendMessage(chatId, `💰 *Dr. Jonathan*: O valor da consulta é de R$ 300,00, com duração média de 1 hora. No atendimento, avaliarei sua situação jurídica e darei as orientações necessárias.`);
-                delete conversas[chatId];
+                client.sendMessage(chatId, `💰 *Dr. Jonathan*: O valor da consulta é de R$ 300,00, com duração média de 1 hora. No atendimento, avaliarei sua situação jurídica e darei as orientações necessárias.  
+
+Deseja mais alguma informação? Digite *menu* para voltar ou *encerrar* para finalizar.`);
+                conversas[chatId].etapa = 1; // mantém a conversa ativa
             } else if (texto === '3') {
                 client.sendMessage(chatId, `📅 *Dr. Jonathan*: Para agendar um atendimento, por favor, informe sua disponibilidade de dias e horários.`);
                 conversas[chatId].etapa = 3;
@@ -186,21 +196,26 @@ Selecione uma das opções abaixo:
             break;
 
         case 2: // andamento do processo
-            client.sendMessage(chatId, `🔎 *Dr. Jonathan*: Obrigado pelas informações. Em breve retornarei com o andamento atualizado do processo.`);
-            delete conversas[chatId];
+            client.sendMessage(chatId, `🔎 *Dr. Jonathan*: Obrigado pelas informações. Em breve retornarei com o andamento atualizado do processo.  
+
+Deseja mais alguma informação? Digite *menu* para voltar ou *encerrar* para finalizar.`);
+            conversas[chatId].etapa = 1; // volta pro menu lógico
             break;
 
         case 3: // agendamento
-            client.sendMessage(chatId, `📌 *Dr. Jonathan*: Obrigado! Recebi sua disponibilidade e entrarei em contato para confirmar o agendamento.`);
-            delete conversas[chatId];
+            client.sendMessage(chatId, `📌 *Dr. Jonathan*: Obrigado! Recebi sua disponibilidade e entrarei em contato para confirmar o agendamento.  
+
+Deseja mais alguma informação? Digite *menu* para voltar ou *encerrar* para finalizar.`);
+            conversas[chatId].etapa = 1;
             break;
 
         case 4: // Ingrid continua atendendo
-            client.sendMessage(chatId, `👩 *Ingrid (Secretária)*: Entendido! Já estou verificando para poder te ajudar da melhor forma.`);
-            delete conversas[chatId];
+            client.sendMessage(chatId, `👩 *Ingrid (Secretária)*: Entendido! Já estou verificando para poder te ajudar da melhor forma.  
+
+Deseja mais alguma informação? Digite *menu* para voltar ou *encerrar* para finalizar.`);
+            conversas[chatId].etapa = 1;
             break;
     }
 });
 
 client.initialize();
-
